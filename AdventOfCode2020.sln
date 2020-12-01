@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode2020.Day01", "AdventOfCode2020.Day01\AdventOfCode2020.Day01.csproj", "{DCB5032E-B9FB-44D3-A813-1E1AE4379821}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode2020.Day01", "AdventOfCode2020.Day01\AdventOfCode2020.Day01.csproj", "{DCB5032E-B9FB-44D3-A813-1E1AE4379821}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Day01", "Day01", "{2C69DA77-712C-4C1A-9D64-181C1109118E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +20,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DCB5032E-B9FB-44D3-A813-1E1AE4379821} = {2C69DA77-712C-4C1A-9D64-181C1109118E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D92E8D3C-26A0-4321-890D-97D879DF8313}
