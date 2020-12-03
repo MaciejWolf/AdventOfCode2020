@@ -2,7 +2,7 @@
 
 namespace AdventOfCode2020.Day03
 {
-    static class Extentions
+    static class Extensions
     {
         public static ulong ToUInt64(this int vIn)
             => Convert.ToUInt64(vIn);
