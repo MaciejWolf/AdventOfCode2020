@@ -13,9 +13,9 @@ namespace AdventOfCode2020.Day04
             var passports = File.ReadAllText("input-day4.txt")
                 .Split("\n\n")
                 .Select(x => x.Replace('\n', ' '))
-                .Select(x => x
+                .Select(line => line
                     .Split(" ")
-                    .Where(x => !string.IsNullOrWhiteSpace(x))
+                    .Where(str => !string.IsNullOrWhiteSpace(str))
                     .Select(str => PassportField.FromString(str))
                     .ToArray())
                 .Select(fields => new Passport(fields))
