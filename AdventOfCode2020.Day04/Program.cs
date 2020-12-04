@@ -22,14 +22,12 @@ namespace AdventOfCode2020.Day04
                 .ToArray();
 
             var puzzle1 = passports
-                .Where(passport => HasAllFields(passport))
-                .Count();
+                .Count(passport => HasAllFields(passport));
 
             Console.WriteLine($"Puzzle1: {puzzle1}");
 
             var puzzle2 = passports
-                .Where(passport => IsValid(passport))
-                .Count();
+                .Count(passport => IsValid(passport));
 
             Console.WriteLine($"Puzzle2: {puzzle2}");
         }
@@ -75,7 +73,7 @@ namespace AdventOfCode2020.Day04
 
         static bool IsHeightValid(string heightStr)
         {
-            var unit = heightStr
+            var unit = heightStr.Substring(0, 2)
                 .TakeLast(2)
                 .Aggregate("", (x, y) => x + y);
 
