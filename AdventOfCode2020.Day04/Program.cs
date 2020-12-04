@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode2020.Day04
@@ -72,11 +73,13 @@ namespace AdventOfCode2020.Day04
         {
             var unit = heightStr
                 .TakeLast(2)
-                .Aggregate("", (x, y) => x + y);
+                .Aggregate(new StringBuilder(), (builder, c) => builder.Append(c))
+                .ToString();
 
             return heightStr
                 .SkipLast(2)
-                .Aggregate("", (x, y) => x + y)
+                .Aggregate(new StringBuilder(), (builder, c) => builder.Append(c))
+                .ToString()
                 .TryParseToInt()
                 .Match(
                     none: () => false,
