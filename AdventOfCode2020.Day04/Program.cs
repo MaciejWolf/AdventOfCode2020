@@ -34,13 +34,16 @@ namespace AdventOfCode2020.Day04
         }
 
         static bool HasAllFields(Passport passport)
-            => passport.GetField("byr").HasValue()
-                && passport.GetField("iyr").HasValue()
-                && passport.GetField("eyr").HasValue()
-                && passport.GetField("hgt").HasValue()
-                && passport.GetField("hcl").HasValue()
-                && passport.GetField("ecl").HasValue()
-                && passport.GetField("pid").HasValue();
+            => passport
+                .AsOption()
+                .Where(p => p.GetField("byr").HasValue())
+                .Where(p => p.GetField("iyr").HasValue())
+                .Where(p => p.GetField("eyr").HasValue())
+                .Where(p => p.GetField("hgt").HasValue())
+                .Where(p => p.GetField("hcl").HasValue())
+                .Where(p => p.GetField("ecl").HasValue())
+                .Where(p => p.GetField("pid").HasValue())
+                .HasValue();
 
         static bool IsValid(Passport passport)
             => passport
