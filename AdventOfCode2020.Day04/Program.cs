@@ -51,10 +51,10 @@ namespace AdventOfCode2020.Day04
                 .Where(p => p.GetField("hcl").HasValue(hcl => IsHairColorValid(hcl)))
                 .Where(p => p.GetField("ecl").HasValue(ecl => IsEyeColorValid(ecl)))
                 .Where(p => p.GetField("pid").HasValue(pid => IsPassportIdValid(pid)))
-            .HasValue();
+                .HasValue();
 
         static bool IsBirthYearValid(string year)
-        => year
+            => year
                 .TryParseToInt()
                 .HasValue(v => v >= 1920 && v <= 2002);
 
