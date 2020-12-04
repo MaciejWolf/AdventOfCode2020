@@ -73,7 +73,7 @@ namespace AdventOfCode2020.Day04
 
         static bool IsHeightValid(string heightStr)
         {
-            var unit = heightStr.Substring(0, 2)
+            var unit = heightStr
                 .TakeLast(2)
                 .Aggregate("", (x, y) => x + y);
 
