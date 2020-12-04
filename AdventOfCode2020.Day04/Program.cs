@@ -48,13 +48,13 @@ namespace AdventOfCode2020.Day04
         static bool IsValid(Passport passport)
             => passport
                 .AsOption()
-                .Where(p => p.GetField("byr").HasValue(byr => IsBirthYearValid(byr)))
-                .Where(p => p.GetField("iyr").HasValue(iyr => IsIssueYearValid(iyr)))
-                .Where(p => p.GetField("eyr").HasValue(eyr => IsExpirationYearValid(eyr)))
-                .Where(p => p.GetField("hgt").HasValue(hgt => IsHeightValid(hgt)))
-                .Where(p => p.GetField("hcl").HasValue(hcl => IsHairColorValid(hcl)))
-                .Where(p => p.GetField("ecl").HasValue(ecl => IsEyeColorValid(ecl)))
-                .Where(p => p.GetField("pid").HasValue(pid => IsPassportIdValid(pid)))
+                .Where(p => p.GetField("byr").HasValue(IsBirthYearValid))
+                .Where(p => p.GetField("iyr").HasValue(IsIssueYearValid))
+                .Where(p => p.GetField("eyr").HasValue(IsExpirationYearValid))
+                .Where(p => p.GetField("hgt").HasValue(IsHeightValid))
+                .Where(p => p.GetField("hcl").HasValue(IsHairColorValid))
+                .Where(p => p.GetField("ecl").HasValue(IsEyeColorValid))
+                .Where(p => p.GetField("pid").HasValue(IsPassportIdValid))
                 .HasValue();
 
         static bool IsBirthYearValid(string year)
