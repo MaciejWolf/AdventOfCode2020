@@ -1,5 +1,6 @@
 ﻿using AdventOfCode2020.Common.Optional;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,12 +12,10 @@ namespace AdventOfCode2020.Day04
     {
         static void Main(string[] args)
         {
-            var passports = File.ReadAllText("input-day4.txt")
-                .Split("\n\n")
-                .Select(x => x.Replace('\n', ' '))
+            var passports = File.ReadAllLines("input-day4.txt")
+                .GroupLines()
                 .Select(line => line
-                    .Split(" ")
-                    .Where(str => !string.IsNullOrWhiteSpace(str))
+                .Split(" ")
                     .Select(str => PassportField.FromString(str))
                     .ToArray())
                 .Select(fields => new Passport(fields))

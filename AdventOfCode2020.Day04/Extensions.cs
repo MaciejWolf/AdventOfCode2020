@@ -1,4 +1,7 @@
 ﻿using AdventOfCode2020.Common.Optional;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace AdventOfCode2020.Day04
 {
@@ -8,5 +11,26 @@ namespace AdventOfCode2020.Day04
             => int.TryParse(str, out var result)
             ? result.AsOption() 
             : Option<int>.None();
+
+        public static IEnumerable<string> GroupLines(this IEnumerable<string> input)
+        {
+            var lines = new List<string>();
+            var builder = new StringBuilder();
+            foreach (var line in input)
+            {
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    builder.Append(line).Append(' ');
+                }
+                else
+                {
+                    lines.Add(builder.ToString());
+                    builder = new StringBuilder();
+                }
+            }
+            lines.Add(builder.ToString());
+
+            return lines.Select(line => line.Trim());
+        }
     }
 }
