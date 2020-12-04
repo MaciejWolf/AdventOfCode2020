@@ -33,29 +33,24 @@ namespace AdventOfCode2020.Day04
             Console.WriteLine($"Puzzle2: {puzzle2}");
         }
 
-        static bool HasAllFields(Passport passport)
-            => passport
-                .AsOption()
-                .Where(p => p.GetField("byr").HasValue())
-                .Where(p => p.GetField("iyr").HasValue())
-                .Where(p => p.GetField("eyr").HasValue())
-                .Where(p => p.GetField("hgt").HasValue())
-                .Where(p => p.GetField("hcl").HasValue())
-                .Where(p => p.GetField("ecl").HasValue())
-                .Where(p => p.GetField("pid").HasValue())
-                .HasValue();
+        static bool HasAllFields(Passport passport) 
+            => passport.GetField("byr").HasValue() &&
+                passport.GetField("iyr").HasValue() &&
+                passport.GetField("eyr").HasValue() &&
+                passport.GetField("hgt").HasValue() &&
+                passport.GetField("hcl").HasValue() &&
+                passport.GetField("ecl").HasValue() &&
+                passport.GetField("pid").HasValue();
+
 
         static bool IsValid(Passport passport)
-            => passport
-                .AsOption()
-                .Where(p => p.GetField("byr").HasValue(IsBirthYearValid))
-                .Where(p => p.GetField("iyr").HasValue(IsIssueYearValid))
-                .Where(p => p.GetField("eyr").HasValue(IsExpirationYearValid))
-                .Where(p => p.GetField("hgt").HasValue(IsHeightValid))
-                .Where(p => p.GetField("hcl").HasValue(IsHairColorValid))
-                .Where(p => p.GetField("ecl").HasValue(IsEyeColorValid))
-                .Where(p => p.GetField("pid").HasValue(IsPassportIdValid))
-                .HasValue();
+            => passport.GetField("byr").HasValue(IsBirthYearValid) &&
+                passport.GetField("iyr").HasValue(IsIssueYearValid) &&
+                passport.GetField("eyr").HasValue(IsExpirationYearValid) &&
+                passport.GetField("hgt").HasValue(IsHeightValid) &&
+                passport.GetField("hcl").HasValue(IsHairColorValid) &&
+                passport.GetField("ecl").HasValue(IsEyeColorValid) &&
+                passport.GetField("pid").HasValue(IsPassportIdValid);
 
         static bool IsBirthYearValid(string year)
             => year
