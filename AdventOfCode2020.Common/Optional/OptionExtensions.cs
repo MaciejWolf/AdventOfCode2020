@@ -36,6 +36,11 @@ namespace AdventOfCode2020.Common.Optional
                 none: () => false,
                 some: _ => true);
 
+        public static bool HasValue<T>(this Option<T> option, Func<T, bool> predicate)
+         => option.Match(
+             none: () => false,
+             some: v => predicate(v));
+
         public static Option<T> WhenSome<T>(this Option<T> option, Action<T> action)
             => option.Match(
                 none: () => option,

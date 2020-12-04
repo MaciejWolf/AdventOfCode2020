@@ -44,32 +44,29 @@ namespace AdventOfCode2020.Day04
         static bool IsValid(Passport passport)
             => passport
                 .AsOption()
-                .Where(p => p.GetField("byr").Where(byr => IsBirthYearValid(byr)).HasValue())
-                .Where(p => p.GetField("iyr").Where(iyr => IsIssueYearValid(iyr)).HasValue())
-                .Where(p => p.GetField("eyr").Where(eyr => IsExpirationYearValid(eyr)).HasValue())
-                .Where(p => p.GetField("hgt").Where(hgt => IsHeightValid(hgt)).HasValue())
-                .Where(p => p.GetField("hcl").Where(hcl => IsHairColorValid(hcl)).HasValue())
-                .Where(p => p.GetField("ecl").Where(ecl => IsEyeColorValid(ecl)).HasValue())
-                .Where(p => p.GetField("pid").Where(pid => IsPassportIdValid(pid)).HasValue())
+                .Where(p => p.GetField("byr").HasValue(byr => IsBirthYearValid(byr)))
+                .Where(p => p.GetField("iyr").HasValue(iyr => IsIssueYearValid(iyr)))
+                .Where(p => p.GetField("eyr").HasValue(eyr => IsExpirationYearValid(eyr)))
+                .Where(p => p.GetField("hgt").HasValue(hgt => IsHeightValid(hgt)))
+                .Where(p => p.GetField("hcl").HasValue(hcl => IsHairColorValid(hcl)))
+                .Where(p => p.GetField("ecl").HasValue(ecl => IsEyeColorValid(ecl)))
+                .Where(p => p.GetField("pid").HasValue(pid => IsPassportIdValid(pid)))
             .HasValue();
 
         static bool IsBirthYearValid(string year)
         => year
                 .TryParseToInt()
-                .Where(v => v >= 1920 && v <= 2002)
-                .HasValue();
+                .HasValue(v => v >= 1920 && v <= 2002);
 
         static bool IsIssueYearValid(string year)
             => year
                 .TryParseToInt()
-                .Where(v => v >= 2010 && v <= 2020)
-                .HasValue();
+                .HasValue(v => v >= 2010 && v <= 2020);
 
         static bool IsExpirationYearValid(string year)
             => year
                 .TryParseToInt()
-                .Where(v => v >= 2020 && v <= 2030)
-                .HasValue();
+                .HasValue(v => v >= 2020 && v <= 2030);
 
         static bool IsHeightValid(string heightStr)
         {
