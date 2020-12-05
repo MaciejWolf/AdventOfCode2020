@@ -17,10 +17,8 @@ namespace AdventOfCode2020.Day05
 
         public static Seat FromCode(string code)
         {
-            var vertical = code.SkipLast(3).ToArray();
-            var horizontal = code.Skip(7).ToArray();
-
-            var row = vertical
+            var row = code
+                .SkipLast(3)
                 .Aggregate(new Range(0, 127), (range, c) => c switch
                 {
                     'B' => range.GetUpperHalf(),
@@ -30,7 +28,8 @@ namespace AdventOfCode2020.Day05
                 .Start
                 .Value;
 
-            var column = horizontal
+            var column = code
+                .Skip(7)
                 .Aggregate(new Range(0, 7), (range, c) => c switch
                 {
                     'R' => range.GetUpperHalf(),
