@@ -21,14 +21,10 @@ namespace AdventOfCode2020.Day04
                 .Select(fields => new Passport(fields))
                 .ToArray();
 
-            var puzzle1 = passports
-                .Count(passport => HasAllFields(passport));
-
+            var puzzle1 = passports.Count(HasAllFields);
             Console.WriteLine($"Puzzle1: {puzzle1}");
 
-            var puzzle2 = passports
-                .Count(passport => IsValid(passport));
-
+            var puzzle2 = passports.Count(IsValid);
             Console.WriteLine($"Puzzle2: {puzzle2}");
         }
 
