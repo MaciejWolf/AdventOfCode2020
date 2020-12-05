@@ -29,7 +29,7 @@ namespace AdventOfCode2020.Day05
                 .Where(id => ids.Contains(id - 1) && ids.Contains(id + 1))
                 .Single();
 
-            Console.WriteLine($"Puzzle1: {puzzle2}");
+            Console.WriteLine($"Puzzle2: {puzzle2}");
         }
     }
 }

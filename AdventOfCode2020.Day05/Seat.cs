@@ -20,31 +20,25 @@ namespace AdventOfCode2020.Day05
             var vertical = code.SkipLast(3).ToArray();
             var horizontal = code.Skip(7).ToArray();
 
-            var verticalRange = new Range(0, 127);
-            var horizontalRange = new Range(0, 7);
-
-            foreach (var c in vertical)
-            {
-                verticalRange = c switch
+            var row = vertical
+                .Aggregate(new Range(0, 127), (range, c) => c switch
                 {
-                    'B' => verticalRange.GetUpperHalf(),
-                    'F' => verticalRange.GetLowerHalf(),
+                    'B' => range.GetUpperHalf(),
+                    'F' => range.GetLowerHalf(),
                     _ => throw new Exception()
-                };
-            }
+                })
+                .Start
+                .Value;
 
-            foreach (var c in horizontal)
-            {
-                horizontalRange = c switch
+            var column = horizontal
+                .Aggregate(new Range(0, 7), (range, c) => c switch
                 {
-                    'R' => horizontalRange.GetUpperHalf(),
-                    'L' => horizontalRange.GetLowerHalf(),
+                    'R' => range.GetUpperHalf(),
+                    'L' => range.GetLowerHalf(),
                     _ => throw new Exception()
-                };
-            }
-
-            var row = verticalRange.Start.Value;
-            var column = horizontalRange.Start.Value;
+                })
+                .Start
+                .Value;
 
             return new Seat(row, column);
         }
