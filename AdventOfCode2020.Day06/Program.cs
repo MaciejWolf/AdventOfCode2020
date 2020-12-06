@@ -10,19 +10,23 @@ namespace AdventOfCode2020.Day06
     {
         static void Main(string[] args)
         {
-            var puzzle1 = File.ReadAllLines("input-day6.txt")
-                .GroupAnswers()
-                .Select(x => x
-                    .ToCharArray()
+            var groupedAnswers = File.ReadAllLines("input-day6.txt").GroupAnswers();
+
+            var puzzle1 = groupedAnswers
+                .Select(group => group
+                    .Aggregate((x, y) => x + y)
+                    .ToArray()
                     .Distinct()
                     .Count())
                 .Sum();
 
             Console.WriteLine($"Puzzle1 : {puzzle1}");
 
-            var puzzle2 = File.ReadAllLines("input-day6.txt")
-                .GroupAnswers2()
-                .Select(x => x.Length)
+            var puzzle2 = groupedAnswers
+                .Select(group => group
+                    .Select(x => x.ToArray())
+                    .Aggregate((x, y) => x.Intersect(y).ToArray())
+                    .Count())
                 .Sum();
 
             Console.WriteLine($"Puzzle2: {puzzle2}");
@@ -31,65 +35,29 @@ namespace AdventOfCode2020.Day06
 
     static class Extensions
     {
-        public static IEnumerable<string> GroupAnswers(this IEnumerable<string> input)
+        public static IEnumerable<IEnumerable<string>> GroupAnswers(this IEnumerable<string> input)
         {
-            var answers = new List<string>();
-            var sb = new StringBuilder();
-            foreach(var str in input)
-            {
-                if (string.IsNullOrWhiteSpace(str))
-                {
-                    answers.Add(sb.ToString());
-                    sb.Clear();
-                }
-                else
-                {
-                    sb.Append(str);
-                }
-            }
-
-            if (sb.Length > 0)
-            {
-                answers.Add(sb.ToString());
-            }
-
-            return answers;
-        }
-
-        public static IEnumerable<char[]> GroupAnswers2(this IEnumerable<string> input)
-        {
-            var a = new List<string>();
-            var uniqueAnswers = new List<char[]>();
+            var groupedAnswers = new List<IEnumerable<string>>();
+            var group = new List<string>();
             foreach (var str in input)
             {
                 if (string.IsNullOrWhiteSpace(str))
                 {
-                    var aa = a
-                        .Select(x => x.ToCharArray())
-                        .Aggregate((x, y) => x.Intersect(y).ToArray());
-
-                    uniqueAnswers.Add(aa);
-
-                    a.Clear();
+                    groupedAnswers.Add(group);
+                    group = new List<string>();
                 }
                 else
                 {
-                    a.Add(str);
+                    group.Add(str);
                 }
             }
 
-            if (a.Count > 0)
+            if (group.Count > 0)
             {
-                var ab = a
-                        .Select(x => x.ToCharArray())
-                        .Aggregate((x, y) => x.Intersect(y).ToArray());
-
-                uniqueAnswers.Add(ab);
+                groupedAnswers.Add(group);
             }
 
-            
-
-            return uniqueAnswers;
+            return groupedAnswers;
         }
     }
 }
