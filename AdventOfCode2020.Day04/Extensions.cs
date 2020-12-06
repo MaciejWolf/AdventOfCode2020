@@ -32,5 +32,11 @@ namespace AdventOfCode2020.Day04
 
             return lines.Select(line => line.Trim());
         }
+
+        public static string AggregateToString(this IEnumerable<char> chars)
+            => chars
+            .Aggregate(new StringBuilder(), (builder, c) => builder.Append(c))
+            .ToString();
+
     }
 }

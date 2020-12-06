@@ -15,8 +15,8 @@ namespace AdventOfCode2020.Day04
             var passports = File.ReadAllLines("input-day4.txt")
                 .GroupLines()
                 .Select(line => line
-                .Split(" ")
-                    .Select(str => PassportField.FromString(str))
+                    .Split(" ")
+                    .Select(PassportField.FromString)
                     .ToArray())
                 .Select(fields => new Passport(fields))
                 .ToArray();
@@ -66,13 +66,11 @@ namespace AdventOfCode2020.Day04
         {
             var unit = heightStr
                 .TakeLast(2)
-                .Aggregate(new StringBuilder(), (builder, c) => builder.Append(c))
-                .ToString();
+                .AggregateToString();
 
             return heightStr
                 .SkipLast(2)
-                .Aggregate(new StringBuilder(), (builder, c) => builder.Append(c))
-                .ToString()
+                .AggregateToString()
                 .TryParseToInt()
                 .Match(
                     none: () => false,

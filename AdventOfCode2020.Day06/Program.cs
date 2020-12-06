@@ -15,7 +15,6 @@ namespace AdventOfCode2020.Day06
             var puzzle1 = groupedAnswers
                 .Select(group => group
                     .Aggregate((x, y) => x + y)
-                    .ToArray()
                     .Distinct()
                     .Count())
                 .Sum();
@@ -26,7 +25,7 @@ namespace AdventOfCode2020.Day06
                 .Select(group => group
                     .Select(x => x.ToArray())
                     .Aggregate((x, y) => x.Intersect(y).ToArray())
-                    .Count())
+                    .Length)
                 .Sum();
 
             Console.WriteLine($"Puzzle2: {puzzle2}");
