@@ -2,36 +2,26 @@
 
 namespace AdventOfCode2020.Common.Optional
 {
-    public sealed class Option<T>
+    public sealed partial class Option<T>
     {
-        private readonly IOption<T> state;
+        private readonly IState state;
 
-        public Option()
-        {
-            state = new None<T>();
-        }
+        public Option() => state = new NoneState();
 
         public Option(T value)
         {
             if (value == null)
-            {
                 throw new ArgumentNullException(nameof(value));
-            }
 
-            state = new Some<T>(value);
+            state = new SomeState(value);
         }
 
-        private Option(IOption<T> state)
-        {
-            this.state = state;
-        }
+        private Option(IState state) => this.state = state;
 
-        public TResult Match<TResult>(Func<TResult> none, Func<T, TResult> some)
-        {
-            return state.Match(none, some);
-        }
+        public TResult Match<TResult>(Func<TResult> none, Func<T, TResult> some) 
+            => state.Match(none, some);
 
-        public static Option<T> None() => new Option<T>(new None<T>());
+        public static Option<T> None() => new Option<T>(new NoneState());
 
         public override bool Equals(object obj)
             => state.Equals(obj);
