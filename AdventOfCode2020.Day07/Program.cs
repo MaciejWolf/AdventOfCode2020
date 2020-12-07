@@ -98,10 +98,10 @@ namespace AdventOfCode2020.Day07
     public static class Extensions
     {
         public static Option<TV> OptionalGet<TK, TV>(this IDictionary<TK, TV> dict, TK key)
-        {
-            dict.TryGetValue(key, out var value);
-            return value.AsOption();
-        }
+            => dict.TryGetValue(key, out var value) 
+            ? value.AsOption() 
+            : Option.None<TV>();
+
 
         public static Option<string> Parse(this string str)
             => str

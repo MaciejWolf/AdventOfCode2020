@@ -10,7 +10,7 @@ namespace AdventOfCode2020.Day04
         public static Option<int> TryParseToInt(this string str)
             => int.TryParse(str, out var result)
             ? result.AsOption() 
-            : Option<int>.None();
+            : Option.None<int>();
 
         public static IEnumerable<string> GroupLines(this IEnumerable<string> input)
         {

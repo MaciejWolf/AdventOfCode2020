@@ -2,13 +2,22 @@
 
 namespace AdventOfCode2020.Common.Optional
 {
+    public struct Option
+    {
+        public static Option<T> Of<T>(T value) 
+            => new Option<T>(value);
+
+        public static Option<T> None<T>()
+            => new Option<T>();
+    }
+
     public sealed partial class Option<T>
     {
         private readonly IState state;
 
-        public Option() => state = new NoneState();
+        internal Option() => state = new NoneState();
 
-        public Option(T value)
+        internal Option(T value)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -16,12 +25,8 @@ namespace AdventOfCode2020.Common.Optional
             state = new SomeState(value);
         }
 
-        private Option(IState state) => this.state = state;
-
         public TResult Match<TResult>(Func<TResult> none, Func<T, TResult> some) 
             => state.Match(none, some);
-
-        public static Option<T> None() => new Option<T>(new NoneState());
 
         public override bool Equals(object obj)
             => state.Equals(obj);

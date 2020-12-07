@@ -17,7 +17,7 @@ namespace AdventOfCode2020.Day04
             return fields
                 .SingleOrDefault(field => field.Name == name)
                 ?.Value
-                .AsOption() ?? Option<string>.None();
+                .AsOption() ?? Option.None<string>();
         }
     }
 }
