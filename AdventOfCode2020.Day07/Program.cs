@@ -12,87 +12,86 @@ namespace AdventOfCode2020.Day07
         {
             var input = File.ReadAllLines("input-day7.txt").ToArray();
 
-            var bagContainsDict = input
+            var containsDict = input
                 .Select(str =>
                 {
                     var arr = str.Split(" bags contain ");
                     var bag = arr[0];
-                    var containedBags = arr[1];
-                    return (bag, containedBags);
+                    var innerBags = arr[1];
+                    return (Bag: bag, InnerBags: innerBags);
                 })
-                .Select(pair =>
+                .Select(tuple =>
                 {
-                    var bag = pair.bag;
-                    var containedBags = pair.containedBags
-                        .Parse()
-                        .Select(str => str.Parse2());
+                    var bag = tuple.Bag;
+                    var innerBags = tuple.InnerBags
+                        .PreprocessInfoString()
+                        .Select(str => str.ParseToDictionary());
 
-                    return (bag, containedBags);
+                    return (Bag: bag, InnerBags: innerBags);
                 })
-                .ToDictionary(pair => pair.bag, pair => pair.containedBags);
+                .ToDictionary(tuple => tuple.Bag, tuple => tuple.InnerBags);
 
-            var bagIsContainedDict = new Dictionary<string, ICollection<string>>();
+            var containedByDict = new Dictionary<string, ICollection<string>>();
 
-            foreach (var kvp in bagContainsDict)
+            foreach (var kvp in containsDict)
             {
                 var containingBag = kvp.Key;
 
-                var containedBags = kvp
+                var innerBags = kvp
                     .Value
                     .Select(x => x.Keys)
                     .ValueOr(Array.Empty<string>());
 
-                foreach (var bag in containedBags)
+                foreach (var bag in innerBags)
                 {
-                    if (bagIsContainedDict.ContainsKey(bag))
+                    if(!containedByDict.ContainsKey(bag))
                     {
-                        bagIsContainedDict[bag].Add(containingBag);
+                        containedByDict.Add(bag, new HashSet<string>());
                     }
-                    else
-                    {
-                        bagIsContainedDict.Add(bag, new HashSet<string>());
-                        bagIsContainedDict[bag].Add(containingBag);
-                    }
+
+                    containedByDict[bag].Add(containingBag);
                 }
             }
 
-            var puzzle1 = Calculate2("shiny gold", bagIsContainedDict).Distinct().Count();
+            var puzzle1 = GetContainingBags("shiny gold", containedByDict).Count;
 
             Console.WriteLine($"Puzzle1: {puzzle1}");
 
-            var puzzle2 = Calculate("shiny gold", bagContainsDict);
+            var puzzle2 = CountContainedBags("shiny gold", containsDict);
 
             Console.WriteLine($"Puzzle2: {puzzle2}");
         }
 
-        static ICollection<string> Calculate2(string name, IDictionary<string, ICollection<string>> dict)
+        static ICollection<string> GetContainingBags(string name, IDictionary<string, ICollection<string>> dict)
             => dict.OptionalGet(name)
                 .Match(
                     none: () => Array.Empty<string>(),
                     some: containing =>
                     {
+                        var result = containing;
                         foreach (var bag in containing)
                         {
-                            containing = containing.Concat(Calculate2(bag, dict)).ToArray();
+                            result = result.Concat(GetContainingBags(bag, dict)).ToArray();
                         }
 
-                        return containing;
+                        return result.Distinct().ToArray();
                     });
         
 
-        static int Calculate(string name, IDictionary<string, Option<IDictionary<string, int>>> dict)
-            => dict[name].Match(
-                none: () => 0,
-                some: bags =>
-                    bags.Aggregate(0, (sum, kvp) =>
-                    {
-                        var amount = kvp.Value;
-                        var bagName = kvp.Key;
+        static int CountContainedBags(string name, IDictionary<string, Option<IDictionary<string, int>>> dict)
+            => dict[name]
+                .Match(
+                    none: () => 0,
+                    some: bags =>
+                        bags.Aggregate(0, (sum, kvp) =>
+                        {
+                            var amount = kvp.Value;
+                            var bagName = kvp.Key;
 
-                        sum += (Calculate(bagName, dict) + 1) * amount;
+                            sum += (CountContainedBags(bagName, dict) + 1) * amount;
 
-                        return sum;
-                    }));
+                            return sum;
+                        }));
     }
 
     public static class Extensions
@@ -103,7 +102,7 @@ namespace AdventOfCode2020.Day07
             : Option.None<TV>();
 
 
-        public static Option<string> Parse(this string str)
+        public static Option<string> PreprocessInfoString(this string str)
             => str
                 .Replace(" bag, ", ";")
                 .Replace(" bags, ", ";")
@@ -113,7 +112,7 @@ namespace AdventOfCode2020.Day07
                 .AsOption()
                 .Where(str => !string.IsNullOrWhiteSpace(str));
 
-        public static IDictionary<string, int> Parse2(this string str)
+        public static IDictionary<string, int> ParseToDictionary(this string str)
             => str.Split(";")
                 .Aggregate(new Dictionary<string, int>(), (dict, bagInfo) =>
                 {
