@@ -66,17 +66,19 @@ namespace AdventOfCode2020.Day07
         }
 
         static ICollection<string> Calculate2(string name, IDictionary<string, ICollection<string>> dict)
-        {
-            if (!dict.TryGetValue(name, out var containing))
-                return Array.Empty<string>();
+            => dict.OptionalGet(name)
+                .Match(
+                    none: () => Array.Empty<string>(),
+                    some: containing =>
+                    {
+                        foreach (var bag in containing)
+                        {
+                            containing = containing.Concat(Calculate2(bag, dict)).ToArray();
+                        }
 
-            foreach (var bag in containing)
-            {
-                containing = containing.Concat(Calculate2(bag, dict)).ToArray();
-            }
-
-            return containing;
-        }
+                        return containing;
+                    });
+        
 
         static int Calculate(string name, IDictionary<string, Option<IDictionary<string, int>>> dict)
             => dict[name].Match(
@@ -95,6 +97,12 @@ namespace AdventOfCode2020.Day07
 
     public static class Extensions
     {
+        public static Option<TV> OptionalGet<TK, TV>(this IDictionary<TK, TV> dict, TK key)
+        {
+            dict.TryGetValue(key, out var value);
+            return value.AsOption();
+        }
+
         public static Option<string> Parse(this string str)
             => str
                 .Replace(" bag, ", ";")
