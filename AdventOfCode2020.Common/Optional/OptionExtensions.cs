@@ -1,37 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AdventOfCode2020.Common.Optional
 {
     public static class OptionExtensions
     {
         public static Option<T> AsOption<T>(this T value)
-        {
-            if (value == null)
-            {
-                return new Option<T>();
-            }
-            else
-            {
-                return new Option<T>(value);
-            }
-        }
+            => value == null
+            ? new Option<T>()
+            : new Option<T>(value);
 
         public static Option<T> NullableToOption<T>(this T? value)
             where T : struct
-        {
-            if (value.HasValue)
-            {
-                return new Option<T>(value.Value);
-            }
-            else
-            {
-                return new Option<T>();
-            }
-        }
+            => value.HasValue
+            ? new Option<T>(value.Value)
+            : new Option<T>();
 
-        public static bool HasValue<T>(this Option<T> option) 
+        public static bool HasValue<T>(this Option<T> option)
             => option.Match(
                 none: () => false,
                 some: _ => true);
