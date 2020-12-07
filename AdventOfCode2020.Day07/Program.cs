@@ -57,7 +57,7 @@ namespace AdventOfCode2020.Day07
 
             Console.WriteLine($"Puzzle1: {puzzle1}");
 
-            var puzzle2 = CountContainedBags("shiny gold", containsDict);
+            var puzzle2 = CountInnerBags("shiny gold", containsDict);
 
             Console.WriteLine($"Puzzle2: {puzzle2}");
         }
@@ -78,7 +78,7 @@ namespace AdventOfCode2020.Day07
                     });
         
 
-        static int CountContainedBags(string name, IDictionary<string, Option<IDictionary<string, int>>> dict)
+        static int CountInnerBags(string name, IDictionary<string, Option<IDictionary<string, int>>> dict)
             => dict[name]
                 .Match(
                     none: () => 0,
@@ -88,7 +88,7 @@ namespace AdventOfCode2020.Day07
                             var amount = kvp.Value;
                             var bagName = kvp.Key;
 
-                            sum += (CountContainedBags(bagName, dict) + 1) * amount;
+                            sum += (CountInnerBags(bagName, dict) + 1) * amount;
 
                             return sum;
                         }));
