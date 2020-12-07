@@ -79,30 +79,23 @@ namespace AdventOfCode2020.Day07
         }
 
         static int Calculate(string name, IDictionary<string, Option<IDictionary<string, int>>> dict)
-        {
-            var opt = dict[name];
-
-            return opt.Match(
+            => dict[name].Match(
                 none: () => 0,
                 some: bags =>
-                {
-                    var sum = 0;
-                    foreach (var kvp in bags)
+                    bags.Aggregate(0, (sum, kvp) =>
                     {
                         var amount = kvp.Value;
                         var bagName = kvp.Key;
 
                         sum += (Calculate(bagName, dict) + 1) * amount;
-                    }
 
-                    return sum;
-                });
-        }
+                        return sum;
+                    }));
     }
 
     public static class Extensions
     {
-        public static Option<string> Parse(this string str) 
+        public static Option<string> Parse(this string str)
             => str
                 .Replace(" bag, ", ";")
                 .Replace(" bags, ", ";")
@@ -113,25 +106,16 @@ namespace AdventOfCode2020.Day07
                 .Where(str => !string.IsNullOrWhiteSpace(str));
 
         public static IDictionary<string, int> Parse2(this string str)
-        {
-            var dict = new Dictionary<string, int>();
+            => str.Split(";")
+                .Aggregate(new Dictionary<string, int>(), (dict, bagInfo) =>
+                {
+                    var arr = bagInfo.Split(" ");
 
-            var bags = str.Split(";");
+                    var amount = int.Parse(arr[0]);
+                    var name = $"{arr[1]} {arr[2]}";
 
-            foreach (var bag in bags)
-            {
-                var arr = bag.Split(" ");
-
-                var quantity = int.Parse(arr[0]);
-                var name1 = arr[1];
-                var name2 = arr[2];
-
-                var name = $"{name1} {name2}";
-
-                dict.Add(name, quantity);
-            }
-
-            return dict;
-        }
+                    dict.Add(name, amount);
+                    return dict;
+                });
     }
 }
