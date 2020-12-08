@@ -62,8 +62,8 @@ namespace AdventOfCode2020.Day07
             Console.WriteLine($"Puzzle2: {puzzle2}");
         }
 
-        static ICollection<string> GetContainingBags(string name, IDictionary<string, ICollection<string>> dict)
-            => dict.OptionalGet(name)
+        static ICollection<string> GetContainingBags(string bagName, IDictionary<string, ICollection<string>> bagsDict)
+            => bagsDict.TryGetValue(bagName)
                 .Match(
                     none: () => Array.Empty<string>(),
                     some: containing =>
@@ -71,15 +71,15 @@ namespace AdventOfCode2020.Day07
                         var result = containing;
                         foreach (var bag in containing)
                         {
-                            result = result.Concat(GetContainingBags(bag, dict)).ToArray();
+                            result = result.Concat(GetContainingBags(bag, bagsDict)).ToArray();
                         }
 
                         return result.Distinct().ToArray();
                     });
         
 
-        static int CountInnerBags(string name, IDictionary<string, Option<IDictionary<string, int>>> dict)
-            => dict[name]
+        static int CountInnerBags(string bagName, IDictionary<string, Option<IDictionary<string, int>>> bagsDict)
+            => bagsDict[bagName]
                 .Match(
                     none: () => 0,
                     some: bags =>
@@ -88,7 +88,7 @@ namespace AdventOfCode2020.Day07
                             var amount = kvp.Value;
                             var bagName = kvp.Key;
 
-                            sum += (CountInnerBags(bagName, dict) + 1) * amount;
+                            sum += (CountInnerBags(bagName, bagsDict) + 1) * amount;
 
                             return sum;
                         }));
@@ -96,7 +96,7 @@ namespace AdventOfCode2020.Day07
 
     public static class Extensions
     {
-        public static Option<TV> OptionalGet<TK, TV>(this IDictionary<TK, TV> dict, TK key)
+        public static Option<TV> TryGetValue<TK, TV>(this IDictionary<TK, TV> dict, TK key)
             => dict.TryGetValue(key, out var value) 
             ? value.AsOption() 
             : Option.None<TV>();
